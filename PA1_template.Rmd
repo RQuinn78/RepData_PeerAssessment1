@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: "Reproducible Research- P. A. 1- Analysis of Times Series Measurements of Human Activity (Steps Taken)"
 author: "Rory Quinn"
 date: "Friday, September 11, 2015"
@@ -123,3 +124,29 @@ plot (wd_split_activity, type="l", col="red", xlab="Time Series Interval", ylab=
 plot (we_split_activity, type="l", col="red", xlab="Time Series Interval",  ylab= "Mean Steps", main="Weekend", ylim=c(0,250))
 ```
 
+=======
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+## Loading and preprocessing the data
+
+
+
+## What is mean total number of steps taken per day?
+
+
+
+## What is the average daily activity pattern?
+
+
+
+## Imputing missing values
+
+
+
+## Are there differences in activity patterns between weekdays and weekends?
+>>>>>>> 80edf39c3bb508fee88e3394542f967dd3fd3270
