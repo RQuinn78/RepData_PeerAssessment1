@@ -1,0 +1,165 @@
+---
+title: "Reproducible Research- P. A. 1- Analysis of Times Series Measurements of Human Activity (Steps Taken)"
+author: "Rory Quinn"
+date: "Friday, September 11, 2015"
+output: html_document
+---
+
+This is an analysis of human activity, specifically steps taken, collected by a personal activity monitoring device in 5 minute intervals over a 2 month period. The data was collected during October and November 2012. 
+
+This analysis was carried out for Peer Assessment 1 of the Reproducible Research course on Coursera. Data available here - [Download Activity Monitoring Data](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip) 
+
+###Loading and Preprocessing the Data
+
+
+```r
+activity <- read.csv ("./data/activity.csv", header=TRUE, stringsAsFactors=FALSE)
+```
+
+###What is Mean Total Number of Steps Taken Per Day
+
+For this part of the assignment we are asked to ignore missing values....  
+
+**1. Calculate the total number of steps taken per day**
+
+
+```r
+library (xtable)
+activity_1 <- na.omit (activity)
+total_daily <- tapply (activity_1$steps, activity_1$date, sum)
+xt <- xtable (total_daily)
+```
+
+```
+## Error in UseMethod("xtable"): no applicable method for 'xtable' applied to an object of class "c('array', 'integer', 'numeric')"
+```
+
+```r
+print (xt, type="html")
+```
+
+```
+## Error in print(xt, type = "html"): object 'xt' not found
+```
+
+**2.Make a histogram of the total number of steps taken each day**
+
+
+```r
+hist (total_daily, 20, col="red", border= "yellow", main="Histogram of Total Daily Steps", xlab="Total Daily Steps", xlim=c(0,25000))
+```
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+
+**3. Calculate and Report the Mean and Median of the total steps taken per day**
+
+
+```r
+mean_total_daily <- mean (total_daily)
+median_total_daily <- median (total_daily)
+```
+
+The mean of the total steps taken per day is `mean_total_daily`. The median of the total steps taken per day is `median_total_daily`.
+
+###What is the average Daily Activity pattern
+
+**1. Make a time series plot of the 5 minute interval and the average number of steps taken averaged across all days**
+
+
+```r
+mean_daily <- tapply (activity_1$steps, activity_1$interval,mean)
+plot (mean_daily, type="l", col="red", xlab="Time Series Interval", xlim=c(0,300), ylab="Mean Steps across all days")
+```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png) 
+
+**2. Which 5 minute interval across all the days in the dataset contains the maximum number of steps**
+
+
+```r
+which.max(mean_daily)
+```
+
+```
+## 835 
+## 104
+```
+
+The 5 minute interval that contains the maximum number of steps across all the days is the  104th interval which is the interval between 8.35am and 8.40am
+
+###Inputting missing values
+
+**1. Calculate and report the total number of missing values in the dataset**
+
+
+```r
+missing_values <- is.na(activity)
+missing_values <- sum(missing_values)
+```
+
+The total number of missing values in the dataset is `missing_values`.
+
+**2. Devise a strategy for filling in missing rows in the dataset.** 
+
+In order to fill the missing rows of the dataset I replaced na's with the mean number of steps taken for that 5 minute interval averaged across all the days for which there was data. 
+
+First I aggregated the data with nas omitted to return a data frame with mean number of steps taken per 5 minute interval. I then replaced the na s in the original dataset with mean values from the aggregated data frame for the same 5 minute intervals. 
+
+**3. Create a new datset that is equal to the original dataset but with the missing data filled in** 
+
+
+```r
+mean_daily_1 <- aggregate (activity_1$steps ~ activity_1$interval, FUN=mean)
+names (mean_daily_1) <- c("interval", "steps")
+ activity$steps[is.na(activity$steps)] <- mean_daily_1$steps[match(activity$interval[is.na(activity$steps)],mean_daily_1$interval)]
+```
+
+**4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of inputting missing data on the estimates of the total daily number of steps?**
+
+
+```r
+fulltotal_daily <- tapply (activity$steps, activity$date, sum)
+hist (fulltotal_daily, 20, col="red", border= "yellow", main="Histogram of Total Daily Steps", xlab="Total Daily Steps", xlim=c(0,25000))
+```
+
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
+
+
+```r
+mean_total_daily <- mean (fulltotal_daily)
+median_total_daily <- median (fulltotal_daily)
+```
+
+The mean of the total steps taken per day (having replaced na s) is `mean_total_daily`. The median of the total steps taken per day is `median_total_daily`. 
+
+###Are there differences in activity patterns between weekdays and weekends?
+
+**1.Create a new factor variable in the dataset with two levels - weekday and weekend indicating whether a given date is a weekday or weekend day.**
+
+
+```r
+activity$date <- as.Date(activity$date)
+days_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+activity$day <- factor ((weekdays(activity$date) %in% days_week), levels=c(FALSE, TRUE), labels=c("weekend", "weekday"))
+xt1 <- xtable (head (activity))
+print (xt1, type=html)
+```
+
+```
+## Error in print.xtable(xt1, type = html): object 'html' not found
+```
+
+**2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).**
+
+
+```r
+split_activity <- split (activity, activity$day)
+wd_split_activity <- tapply (split_activity$weekday$steps, split_activity$weekday$interval, mean)
+we_split_activity <- tapply (split_activity$weekend$steps, split_activity$weekend$interval, mean)
+par (mfrow=c(2,1))
+plot (wd_split_activity, type="l", col="red", xlab="Time Series Interval", ylab= "Mean Steps", main="Weekday", ylim=c(0,250))
+plot (we_split_activity, type="l", col="red", xlab="Time Series Interval",  ylab= "Mean Steps", main="Weekend", ylim=c(0,250))
+```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+
