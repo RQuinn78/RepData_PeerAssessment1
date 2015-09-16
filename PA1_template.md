@@ -27,11 +27,28 @@ For this part of the assignment we are asked to ignore missing values....
 ```r
 activity_1 <- na.omit (activity)
 total_daily <- tapply (activity_1$steps, activity_1$date, sum)
-toal_daily
+total_daily
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'toal_daily' not found
+## 2012-10-02 2012-10-03 2012-10-04 2012-10-05 2012-10-06 2012-10-07 
+##        126      11352      12116      13294      15420      11015 
+## 2012-10-09 2012-10-10 2012-10-11 2012-10-12 2012-10-13 2012-10-14 
+##      12811       9900      10304      17382      12426      15098 
+## 2012-10-15 2012-10-16 2012-10-17 2012-10-18 2012-10-19 2012-10-20 
+##      10139      15084      13452      10056      11829      10395 
+## 2012-10-21 2012-10-22 2012-10-23 2012-10-24 2012-10-25 2012-10-26 
+##       8821      13460       8918       8355       2492       6778 
+## 2012-10-27 2012-10-28 2012-10-29 2012-10-30 2012-10-31 2012-11-02 
+##      10119      11458       5018       9819      15414      10600 
+## 2012-11-03 2012-11-05 2012-11-06 2012-11-07 2012-11-08 2012-11-11 
+##      10571      10439       8334      12883       3219      12608 
+## 2012-11-12 2012-11-13 2012-11-15 2012-11-16 2012-11-17 2012-11-18 
+##      10765       7336         41       5441      14339      15110 
+## 2012-11-19 2012-11-20 2012-11-21 2012-11-22 2012-11-23 2012-11-24 
+##       8841       4472      12787      20427      21194      14478 
+## 2012-11-25 2012-11-26 2012-11-27 2012-11-28 2012-11-29 
+##      11834      11162      13646      10183       7047
 ```
 
 **2.Make a histogram of the total number of steps taken each day**
@@ -48,10 +65,12 @@ hist (total_daily, 20, col="red", border= "yellow", main="Histogram of Total Dai
 
 ```r
 mean_total_daily <- mean (total_daily)
+mean_total_daily <- as.integer (mean_total_daily)
 median_total_daily <- median (total_daily)
+median_total_daily <- as.integer(median_total_daily)
 ```
 
-The mean of the total steps taken per day is 1.0766189 &times; 10<sup>4</sup>. The median of the total steps taken per day is 10765.
+The mean of the total steps taken per day is 10766. The median of the total steps taken per day is 10765.
 
 ###What is the average Daily Activity pattern
 
@@ -104,6 +123,17 @@ First I aggregated the data with nas omitted to return a data frame with mean nu
 mean_daily_1 <- aggregate (activity_1$steps ~ activity_1$interval, FUN=mean)
 names (mean_daily_1) <- c("interval", "steps")
  activity$steps[is.na(activity$steps)] <- mean_daily_1$steps[match(activity$interval[is.na(activity$steps)],mean_daily_1$interval)]
+head (activity)
+```
+
+```
+##       steps       date interval
+## 1 1.7169811 2012-10-01        0
+## 2 0.3396226 2012-10-01        5
+## 3 0.1320755 2012-10-01       10
+## 4 0.1509434 2012-10-01       15
+## 5 0.0754717 2012-10-01       20
+## 6 2.0943396 2012-10-01       25
 ```
 
 **4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of inputting missing data on the estimates of the total daily number of steps?**
@@ -119,10 +149,12 @@ hist (fulltotal_daily, 20, col="red", border= "yellow", main="Histogram of Total
 
 ```r
 mean_total_daily <- mean (fulltotal_daily)
+mean_total_daily <- as.integer (mean_total_daily)
 median_total_daily <- median (fulltotal_daily)
+median_total_daily <- as.integer (median_total_daily)
 ```
 
-The mean of the total steps taken per day (having replaced na s) is 1.0766189 &times; 10<sup>4</sup>. The median of the total steps taken per day is 1.0766189 &times; 10<sup>4</sup>. 
+The mean of the total steps taken per day (having replaced na s) is 10766. The median of the total steps taken per day is 10766. 
 
 ###Are there differences in activity patterns between weekdays and weekends?
 
@@ -130,38 +162,9 @@ The mean of the total steps taken per day (having replaced na s) is 1.0766189 &t
 
 
 ```r
-library(xtable)
-```
-
-```
-## Warning: package 'xtable' was built under R version 3.1.3
-```
-
-```r
 activity$date <- as.Date(activity$date)
 days_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 activity$day <- factor ((weekdays(activity$date) %in% days_week), levels=c(FALSE, TRUE), labels=c("weekend", "weekday"))
-xt1 <- xtable (head (activity))
-print (xt1, type="html")
-```
-
-```
-## Warning in formatC(x = structure(c(15614, 15614, 15614, 15614, 15614,
-## 15614: class of 'x' was discarded
-```
-
-```
-## <!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
-## <!-- Wed Sep 16 21:12:19 2015 -->
-## <table border=1>
-## <tr> <th>  </th> <th> steps </th> <th> date </th> <th> interval </th> <th> day </th>  </tr>
-##   <tr> <td align="right"> 1 </td> <td align="right"> 1.72 </td> <td align="right"> 15614.00 </td> <td align="right">   0 </td> <td> weekday </td> </tr>
-##   <tr> <td align="right"> 2 </td> <td align="right"> 0.34 </td> <td align="right"> 15614.00 </td> <td align="right">   5 </td> <td> weekday </td> </tr>
-##   <tr> <td align="right"> 3 </td> <td align="right"> 0.13 </td> <td align="right"> 15614.00 </td> <td align="right">  10 </td> <td> weekday </td> </tr>
-##   <tr> <td align="right"> 4 </td> <td align="right"> 0.15 </td> <td align="right"> 15614.00 </td> <td align="right">  15 </td> <td> weekday </td> </tr>
-##   <tr> <td align="right"> 5 </td> <td align="right"> 0.08 </td> <td align="right"> 15614.00 </td> <td align="right">  20 </td> <td> weekday </td> </tr>
-##   <tr> <td align="right"> 6 </td> <td align="right"> 2.09 </td> <td align="right"> 15614.00 </td> <td align="right">  25 </td> <td> weekday </td> </tr>
-##    </table>
 ```
 
 **2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).**

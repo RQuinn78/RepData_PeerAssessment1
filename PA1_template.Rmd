@@ -26,7 +26,7 @@ For this part of the assignment we are asked to ignore missing values....
 
 activity_1 <- na.omit (activity)
 total_daily <- tapply (activity_1$steps, activity_1$date, sum)
-toal_daily
+total_daily
 ````
 
 **2.Make a histogram of the total number of steps taken each day**
@@ -39,7 +39,9 @@ hist (total_daily, 20, col="red", border= "yellow", main="Histogram of Total Dai
 
 ```{r, echo=TRUE}
 mean_total_daily <- mean (total_daily)
+mean_total_daily <- as.integer (mean_total_daily)
 median_total_daily <- median (total_daily)
+median_total_daily <- as.integer(median_total_daily)
 ```
 
 The mean of the total steps taken per day is `r mean_total_daily`. The median of the total steps taken per day is `r median_total_daily`.
@@ -84,6 +86,7 @@ First I aggregated the data with nas omitted to return a data frame with mean nu
 mean_daily_1 <- aggregate (activity_1$steps ~ activity_1$interval, FUN=mean)
 names (mean_daily_1) <- c("interval", "steps")
  activity$steps[is.na(activity$steps)] <- mean_daily_1$steps[match(activity$interval[is.na(activity$steps)],mean_daily_1$interval)]
+head (activity)
 ```
 
 **4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of inputting missing data on the estimates of the total daily number of steps?**
@@ -95,7 +98,9 @@ hist (fulltotal_daily, 20, col="red", border= "yellow", main="Histogram of Total
 
 ``` {r, echo=TRUE}
 mean_total_daily <- mean (fulltotal_daily)
+mean_total_daily <- as.integer (mean_total_daily)
 median_total_daily <- median (fulltotal_daily)
+median_total_daily <- as.integer (median_total_daily)
 ```
 
 The mean of the total steps taken per day (having replaced na s) is `r mean_total_daily`. The median of the total steps taken per day is `r median_total_daily`. 
@@ -105,12 +110,9 @@ The mean of the total steps taken per day (having replaced na s) is `r mean_tota
 **1.Create a new factor variable in the dataset with two levels - weekday and weekend indicating whether a given date is a weekday or weekend day.**
 
 ``` {r, echo=TRUE}
-library(xtable)
 activity$date <- as.Date(activity$date)
 days_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 activity$day <- factor ((weekdays(activity$date) %in% days_week), levels=c(FALSE, TRUE), labels=c("weekend", "weekday"))
-xt1 <- xtable (head (activity))
-print (xt1, type="html")
 ```
 
 **2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).**

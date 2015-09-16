@@ -218,10 +218,27 @@ hr {
 
 <pre><code class="r">activity_1 &lt;- na.omit (activity)
 total_daily &lt;- tapply (activity_1$steps, activity_1$date, sum)
-toal_daily
+total_daily
 </code></pre>
 
-<pre><code>## Error in eval(expr, envir, enclos): object &#39;toal_daily&#39; not found
+<pre><code>## 2012-10-02 2012-10-03 2012-10-04 2012-10-05 2012-10-06 2012-10-07 
+##        126      11352      12116      13294      15420      11015 
+## 2012-10-09 2012-10-10 2012-10-11 2012-10-12 2012-10-13 2012-10-14 
+##      12811       9900      10304      17382      12426      15098 
+## 2012-10-15 2012-10-16 2012-10-17 2012-10-18 2012-10-19 2012-10-20 
+##      10139      15084      13452      10056      11829      10395 
+## 2012-10-21 2012-10-22 2012-10-23 2012-10-24 2012-10-25 2012-10-26 
+##       8821      13460       8918       8355       2492       6778 
+## 2012-10-27 2012-10-28 2012-10-29 2012-10-30 2012-10-31 2012-11-02 
+##      10119      11458       5018       9819      15414      10600 
+## 2012-11-03 2012-11-05 2012-11-06 2012-11-07 2012-11-08 2012-11-11 
+##      10571      10439       8334      12883       3219      12608 
+## 2012-11-12 2012-11-13 2012-11-15 2012-11-16 2012-11-17 2012-11-18 
+##      10765       7336         41       5441      14339      15110 
+## 2012-11-19 2012-11-20 2012-11-21 2012-11-22 2012-11-23 2012-11-24 
+##       8841       4472      12787      20427      21194      14478 
+## 2012-11-25 2012-11-26 2012-11-27 2012-11-28 2012-11-29 
+##      11834      11162      13646      10183       7047
 </code></pre>
 
 <p><strong>2.Make a histogram of the total number of steps taken each day</strong></p>
@@ -234,10 +251,12 @@ toal_daily
 <p><strong>3. Calculate and Report the Mean and Median of the total steps taken per day</strong></p>
 
 <pre><code class="r">mean_total_daily &lt;- mean (total_daily)
+mean_total_daily &lt;- as.integer (mean_total_daily)
 median_total_daily &lt;- median (total_daily)
+median_total_daily &lt;- as.integer(median_total_daily)
 </code></pre>
 
-<p>The mean of the total steps taken per day is 1.0766189 &times; 10<sup>4</sup>. The median of the total steps taken per day is 10765.</p>
+<p>The mean of the total steps taken per day is 10766. The median of the total steps taken per day is 10765.</p>
 
 <p>###What is the average Daily Activity pattern</p>
 
@@ -281,6 +300,16 @@ missing_values &lt;- sum(missing_values)
 <pre><code class="r">mean_daily_1 &lt;- aggregate (activity_1$steps ~ activity_1$interval, FUN=mean)
 names (mean_daily_1) &lt;- c(&quot;interval&quot;, &quot;steps&quot;)
  activity$steps[is.na(activity$steps)] &lt;- mean_daily_1$steps[match(activity$interval[is.na(activity$steps)],mean_daily_1$interval)]
+head (activity)
+</code></pre>
+
+<pre><code>##       steps       date interval
+## 1 1.7169811 2012-10-01        0
+## 2 0.3396226 2012-10-01        5
+## 3 0.1320755 2012-10-01       10
+## 4 0.1509434 2012-10-01       15
+## 5 0.0754717 2012-10-01       20
+## 6 2.0943396 2012-10-01       25
 </code></pre>
 
 <p><strong>4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of inputting missing data on the estimates of the total daily number of steps?</strong></p>
@@ -292,43 +321,20 @@ hist (fulltotal_daily, 20, col=&quot;red&quot;, border= &quot;yellow&quot;, main
 <p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-9"/> </p>
 
 <pre><code class="r">mean_total_daily &lt;- mean (fulltotal_daily)
+mean_total_daily &lt;- as.integer (mean_total_daily)
 median_total_daily &lt;- median (fulltotal_daily)
+median_total_daily &lt;- as.integer (median_total_daily)
 </code></pre>
 
-<p>The mean of the total steps taken per day (having replaced na s) is 1.0766189 &times; 10<sup>4</sup>. The median of the total steps taken per day is 1.0766189 &times; 10<sup>4</sup>. </p>
+<p>The mean of the total steps taken per day (having replaced na s) is 10766. The median of the total steps taken per day is 10766. </p>
 
 <p>###Are there differences in activity patterns between weekdays and weekends?</p>
 
 <p><strong>1.Create a new factor variable in the dataset with two levels - weekday and weekend indicating whether a given date is a weekday or weekend day.</strong></p>
 
-<pre><code class="r">library(xtable)
-</code></pre>
-
-<pre><code>## Warning: package &#39;xtable&#39; was built under R version 3.1.3
-</code></pre>
-
 <pre><code class="r">activity$date &lt;- as.Date(activity$date)
 days_week &lt;- c(&quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;, &quot;Thursday&quot;, &quot;Friday&quot;)
 activity$day &lt;- factor ((weekdays(activity$date) %in% days_week), levels=c(FALSE, TRUE), labels=c(&quot;weekend&quot;, &quot;weekday&quot;))
-xt1 &lt;- xtable (head (activity))
-print (xt1, type=&quot;html&quot;)
-</code></pre>
-
-<pre><code>## Warning in formatC(x = structure(c(15614, 15614, 15614, 15614, 15614,
-## 15614: class of &#39;x&#39; was discarded
-</code></pre>
-
-<pre><code>## &lt;!-- html table generated in R 3.1.2 by xtable 1.7-4 package --&gt;
-## &lt;!-- Wed Sep 16 21:12:19 2015 --&gt;
-## &lt;table border=1&gt;
-## &lt;tr&gt; &lt;th&gt;  &lt;/th&gt; &lt;th&gt; steps &lt;/th&gt; &lt;th&gt; date &lt;/th&gt; &lt;th&gt; interval &lt;/th&gt; &lt;th&gt; day &lt;/th&gt;  &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td align=&quot;right&quot;&gt; 1 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 1.72 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 15614.00 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt;   0 &lt;/td&gt; &lt;td&gt; weekday &lt;/td&gt; &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td align=&quot;right&quot;&gt; 2 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 0.34 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 15614.00 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt;   5 &lt;/td&gt; &lt;td&gt; weekday &lt;/td&gt; &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td align=&quot;right&quot;&gt; 3 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 0.13 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 15614.00 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt;  10 &lt;/td&gt; &lt;td&gt; weekday &lt;/td&gt; &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td align=&quot;right&quot;&gt; 4 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 0.15 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 15614.00 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt;  15 &lt;/td&gt; &lt;td&gt; weekday &lt;/td&gt; &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td align=&quot;right&quot;&gt; 5 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 0.08 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 15614.00 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt;  20 &lt;/td&gt; &lt;td&gt; weekday &lt;/td&gt; &lt;/tr&gt;
-##   &lt;tr&gt; &lt;td align=&quot;right&quot;&gt; 6 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 2.09 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt; 15614.00 &lt;/td&gt; &lt;td align=&quot;right&quot;&gt;  25 &lt;/td&gt; &lt;td&gt; weekday &lt;/td&gt; &lt;/tr&gt;
-##    &lt;/table&gt;
 </code></pre>
 
 <p><strong>2.Make a panel plot containing a time series plot (i.e. type = &ldquo;l&rdquo;) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).</strong></p>
