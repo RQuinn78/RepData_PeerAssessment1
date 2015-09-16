@@ -23,11 +23,10 @@ For this part of the assignment we are asked to ignore missing values....
 **1. Calculate the total number of steps taken per day**
 
 ```{r, echo=TRUE}
-library (xtable)
+
 activity_1 <- na.omit (activity)
 total_daily <- tapply (activity_1$steps, activity_1$date, sum)
-xt <- xtable (total_daily)
-print (xt, type="html")
+toal_daily
 ````
 
 **2.Make a histogram of the total number of steps taken each day**
@@ -43,7 +42,7 @@ mean_total_daily <- mean (total_daily)
 median_total_daily <- median (total_daily)
 ```
 
-The mean of the total steps taken per day is `mean_total_daily`. The median of the total steps taken per day is `median_total_daily`.
+The mean of the total steps taken per day is `r mean_total_daily`. The median of the total steps taken per day is `r median_total_daily`.
 
 ###What is the average Daily Activity pattern
 
@@ -71,7 +70,7 @@ missing_values <- is.na(activity)
 missing_values <- sum(missing_values)
 ```
 
-The total number of missing values in the dataset is `missing_values`.
+The total number of missing values in the dataset is `r missing_values`.
 
 **2. Devise a strategy for filling in missing rows in the dataset.** 
 
@@ -99,18 +98,19 @@ mean_total_daily <- mean (fulltotal_daily)
 median_total_daily <- median (fulltotal_daily)
 ```
 
-The mean of the total steps taken per day (having replaced na s) is `mean_total_daily`. The median of the total steps taken per day is `median_total_daily`. 
+The mean of the total steps taken per day (having replaced na s) is `r mean_total_daily`. The median of the total steps taken per day is `r median_total_daily`. 
 
 ###Are there differences in activity patterns between weekdays and weekends?
 
 **1.Create a new factor variable in the dataset with two levels - weekday and weekend indicating whether a given date is a weekday or weekend day.**
 
 ``` {r, echo=TRUE}
+library(xtable)
 activity$date <- as.Date(activity$date)
 days_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 activity$day <- factor ((weekdays(activity$date) %in% days_week), levels=c(FALSE, TRUE), labels=c("weekend", "weekday"))
 xt1 <- xtable (head (activity))
-print (xt1, type=html)
+print (xt1, type="html")
 ```
 
 **2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).**
@@ -124,29 +124,8 @@ plot (wd_split_activity, type="l", col="red", xlab="Time Series Interval", ylab=
 plot (we_split_activity, type="l", col="red", xlab="Time Series Interval",  ylab= "Mean Steps", main="Weekend", ylim=c(0,250))
 ```
 
-=======
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
-
-
-## Loading and preprocessing the data
 
 
 
-## What is mean total number of steps taken per day?
 
-
-
-## What is the average daily activity pattern?
-
-
-
-## Imputing missing values
-
-
-
-## Are there differences in activity patterns between weekdays and weekends?
 >>>>>>> 80edf39c3bb508fee88e3394542f967dd3fd3270

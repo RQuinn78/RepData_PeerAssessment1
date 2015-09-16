@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: "Reproducible Research- P. A. 1- Analysis of Times Series Measurements of Human Activity (Steps Taken)"
 author: "Rory Quinn"
 date: "Friday, September 11, 2015"
@@ -24,22 +25,13 @@ For this part of the assignment we are asked to ignore missing values....
 
 
 ```r
-library (xtable)
 activity_1 <- na.omit (activity)
 total_daily <- tapply (activity_1$steps, activity_1$date, sum)
-xt <- xtable (total_daily)
+toal_daily
 ```
 
 ```
-## Error in UseMethod("xtable"): no applicable method for 'xtable' applied to an object of class "c('array', 'integer', 'numeric')"
-```
-
-```r
-print (xt, type="html")
-```
-
-```
-## Error in print(xt, type = "html"): object 'xt' not found
+## Error in eval(expr, envir, enclos): object 'toal_daily' not found
 ```
 
 **2.Make a histogram of the total number of steps taken each day**
@@ -59,7 +51,7 @@ mean_total_daily <- mean (total_daily)
 median_total_daily <- median (total_daily)
 ```
 
-The mean of the total steps taken per day is `mean_total_daily`. The median of the total steps taken per day is `median_total_daily`.
+The mean of the total steps taken per day is 1.0766189 &times; 10<sup>4</sup>. The median of the total steps taken per day is 10765.
 
 ###What is the average Daily Activity pattern
 
@@ -97,7 +89,7 @@ missing_values <- is.na(activity)
 missing_values <- sum(missing_values)
 ```
 
-The total number of missing values in the dataset is `missing_values`.
+The total number of missing values in the dataset is 2304.
 
 **2. Devise a strategy for filling in missing rows in the dataset.** 
 
@@ -130,7 +122,7 @@ mean_total_daily <- mean (fulltotal_daily)
 median_total_daily <- median (fulltotal_daily)
 ```
 
-The mean of the total steps taken per day (having replaced na s) is `mean_total_daily`. The median of the total steps taken per day is `median_total_daily`. 
+The mean of the total steps taken per day (having replaced na s) is 1.0766189 &times; 10<sup>4</sup>. The median of the total steps taken per day is 1.0766189 &times; 10<sup>4</sup>. 
 
 ###Are there differences in activity patterns between weekdays and weekends?
 
@@ -138,15 +130,38 @@ The mean of the total steps taken per day (having replaced na s) is `mean_total_
 
 
 ```r
+library(xtable)
+```
+
+```
+## Warning: package 'xtable' was built under R version 3.1.3
+```
+
+```r
 activity$date <- as.Date(activity$date)
 days_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 activity$day <- factor ((weekdays(activity$date) %in% days_week), levels=c(FALSE, TRUE), labels=c("weekend", "weekday"))
 xt1 <- xtable (head (activity))
-print (xt1, type=html)
+print (xt1, type="html")
 ```
 
 ```
-## Error in print.xtable(xt1, type = html): object 'html' not found
+## Warning in formatC(x = structure(c(15614, 15614, 15614, 15614, 15614,
+## 15614: class of 'x' was discarded
+```
+
+```
+## <!-- html table generated in R 3.1.2 by xtable 1.7-4 package -->
+## <!-- Wed Sep 16 21:12:19 2015 -->
+## <table border=1>
+## <tr> <th>  </th> <th> steps </th> <th> date </th> <th> interval </th> <th> day </th>  </tr>
+##   <tr> <td align="right"> 1 </td> <td align="right"> 1.72 </td> <td align="right"> 15614.00 </td> <td align="right">   0 </td> <td> weekday </td> </tr>
+##   <tr> <td align="right"> 2 </td> <td align="right"> 0.34 </td> <td align="right"> 15614.00 </td> <td align="right">   5 </td> <td> weekday </td> </tr>
+##   <tr> <td align="right"> 3 </td> <td align="right"> 0.13 </td> <td align="right"> 15614.00 </td> <td align="right">  10 </td> <td> weekday </td> </tr>
+##   <tr> <td align="right"> 4 </td> <td align="right"> 0.15 </td> <td align="right"> 15614.00 </td> <td align="right">  15 </td> <td> weekday </td> </tr>
+##   <tr> <td align="right"> 5 </td> <td align="right"> 0.08 </td> <td align="right"> 15614.00 </td> <td align="right">  20 </td> <td> weekday </td> </tr>
+##   <tr> <td align="right"> 6 </td> <td align="right"> 2.09 </td> <td align="right"> 15614.00 </td> <td align="right">  25 </td> <td> weekday </td> </tr>
+##    </table>
 ```
 
 **2.Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).**
@@ -163,3 +178,8 @@ plot (we_split_activity, type="l", col="red", xlab="Time Series Interval",  ylab
 
 ![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 
+
+
+
+
+>>>>>>> 80edf39c3bb508fee88e3394542f967dd3fd3270
